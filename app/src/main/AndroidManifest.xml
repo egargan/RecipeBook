@@ -7,8 +7,7 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:supportsRtl="true">
 
         <activity android:name=".RecipeListActivity">
             <intent-filter>
@@ -21,8 +20,11 @@
 
         </activity>
 
-        <provider android:name=".RecipeProvider"
-            android:authorities="com.egargan.recipebook.RecipeProvider"
+        <activity android:name=".NewRecipeActivity">
+        </activity>
+
+        <provider android:name=".RecipeDB.RecipeProvider"
+            android:authorities="com.egargan.recipebook.RecipeDB.RecipeProvider"
             android:exported="false"> <!-- Other apps can't access this provider without permission -->
 
         </provider>
