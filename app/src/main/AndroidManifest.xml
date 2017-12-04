@@ -7,9 +7,11 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:supportsRtl="true">
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
 
-        <activity android:name=".RecipeListActivity">
+        <activity android:name=".RecipeListActivity"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -21,10 +23,11 @@
         </activity>
 
         <activity android:name=".NewRecipeActivity">
+            
         </activity>
 
-        <provider android:name=".RecipeDB.RecipeProvider"
-            android:authorities="com.egargan.recipebook.RecipeDB.RecipeProvider"
+        <provider android:name="com.egargan.recipebook.provider.RecipeProvider"
+            android:authorities="com.egargan.recipebook.provider.RecipeProvider"
             android:exported="false"> <!-- Other apps can't access this provider without permission -->
 
         </provider>

@@ -1,4 +1,4 @@
-package com.egargan.recipebook.RecipeDB;
+package com.egargan.recipebook.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -12,6 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+/**
+ * Content provider to interface with recipe database described in DbHelper.
+ * @see DbHelper
+ */
 public class RecipeProvider extends ContentProvider {
 
     private DbHelper dbHelper;
@@ -21,18 +25,20 @@ public class RecipeProvider extends ContentProvider {
     private static final int RECIPES = 1;
     private static final int RECIPE_ID = 2;
 
+    //
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
-        matcher.addURI(Contract.AUTHORITY, Contract.RecipeTable.TABLE_NAME, RECIPES);
-        matcher.addURI(Contract.AUTHORITY,Contract.RecipeTable.TABLE_NAME + "/#", RECIPE_ID);
+        matcher.addURI(Contract.AUTHORITY, Contract.Recipe.NAME_TABLE, RECIPES);
+        matcher.addURI(Contract.AUTHORITY, Contract.Recipe.NAME_TABLE + "/#", RECIPE_ID);
     }
 
     @Override
     public boolean onCreate() {
 
+        // Invoked when application starts - is not called by us!
         dbHelper = new DbHelper(getContext());
 
-        return false; // set to true when done probs?
+        return true; // TODO: check if db succesfully loaded, and reflect in return value.
     }
 
     @Nullable @Override
@@ -45,13 +51,13 @@ public class RecipeProvider extends ContentProvider {
         switch (matcher.match(uri)) {
 
             case RECIPE_ID:
-                qbuilder.appendWhere(Contract.RecipeTable._ID + "="
+                qbuilder.appendWhere(Contract.Recipe._ID + "="
                         + uri.getLastPathSegment());
 
                 // Case falls through, so recipe table is queried in either case
 
             case RECIPES :
-                qbuilder.setTables(Contract.RecipeTable.TABLE_NAME);
+                qbuilder.setTables(Contract.Recipe.NAME_TABLE);
                 break;
 
             default :
@@ -60,7 +66,7 @@ public class RecipeProvider extends ContentProvider {
         }
 
         Cursor cursor = qbuilder.query(dbHelper.getReadableDatabase(), projection, selection,
-                selectionArgs, null, null, sortOrder);
+                selectionArgs, null, null, null);
 
         // Necessary for content observers to properly catch change notifications of data at uri.
         cursor.setNotificationUri(getContext().getContentResolver(), uri);
@@ -70,7 +76,16 @@ public class RecipeProvider extends ContentProvider {
 
     @Nullable @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+
+        // Returns MIME string denoting db item types, either an entire table (dir),
+        // or a single record (item)
+
+        if (uri.getLastPathSegment() == null) {
+            return "vnd.android.cursor.dir/RecipeProvder.data.text";
+        } else {
+            return "vnd.android.cursor.item/RecipeProvder.data.text";
+        }
+
     }
 
     @Nullable @Override
@@ -82,7 +97,7 @@ public class RecipeProvider extends ContentProvider {
         switch (matcher.match(uri)) {
 
             case RECIPES :
-                id = db.insert(Contract.RecipeTable.TABLE_NAME, null, values);
+                id = db.insert(Contract.Recipe.NAME_TABLE, null, values);
                 break;
 
             default:
@@ -90,7 +105,7 @@ public class RecipeProvider extends ContentProvider {
                 return null;
         }
 
-        // Alert content observers to changes
+        // Alert content observers that are observing the data at 'uri' that it has changed (?)
         getContext().getContentResolver().notifyChange(uri, null);
 
         return ContentUris.withAppendedId(uri, id);
@@ -108,7 +123,7 @@ public class RecipeProvider extends ContentProvider {
 
             case RECIPES :
 
-                deletions = db.delete(Contract.RecipeTable.TABLE_NAME,
+                deletions = db.delete(Contract.Recipe.NAME_TABLE,
                         selection, selectionArgs);
                 break;
 
@@ -118,18 +133,19 @@ public class RecipeProvider extends ContentProvider {
                 if (selection != null) {
                     selection += " AND ";
                 }
-                selection += Contract.RecipeTable._ID + "=" + uri.getLastPathSegment();
+                selection += Contract.Recipe._ID + "=" + uri.getLastPathSegment();
 
-                deletions = db.delete(Contract.RecipeTable.TABLE_NAME,
+                deletions = db.delete(Contract.Recipe.NAME_TABLE,
                         selection, selectionArgs);
+                break;
 
             default :
                 Log.e("prov","Table at uri not found.");
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
 
-
-        return 0;
+        return deletions;
     }
 
     @Override
@@ -145,7 +161,7 @@ public class RecipeProvider extends ContentProvider {
 
             case RECIPES :
 
-                updates = db.update(Contract.RecipeTable.TABLE_NAME,
+                updates = db.update(Contract.Recipe.NAME_TABLE,
                         values, selection, selectionArgs);
                 break;
 
@@ -154,9 +170,9 @@ public class RecipeProvider extends ContentProvider {
                 if (selection != null) {
                     selection += " AND ";
                 }
-                selection += Contract.RecipeTable._ID + "=" + uri.getLastPathSegment();
+                selection += Contract.Recipe._ID + "=" + uri.getLastPathSegment();
 
-                updates = db.update(Contract.RecipeTable.TABLE_NAME,
+                updates = db.update(Contract.Recipe.NAME_TABLE,
                         values,
                         selection,
                         selectionArgs);
@@ -166,6 +182,8 @@ public class RecipeProvider extends ContentProvider {
             default :
                 Log.e("prov","Table at uri not found.");
         }
+
+        getContext().getContentResolver().notifyChange(uri, null);
 
         return updates;
     }

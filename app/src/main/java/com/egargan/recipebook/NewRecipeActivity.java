@@ -8,7 +8,7 @@ public class NewRecipeActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipe_new);
+        setContentView(R.layout.activity_recipe_add);
     }
 
 

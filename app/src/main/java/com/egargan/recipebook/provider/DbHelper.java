@@ -1,15 +1,16 @@
-package com.egargan.recipebook.RecipeDB;
+package com.egargan.recipebook.provider;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.egargan.recipebook.RecipeDB.Contract.RecipeTable;
+import com.egargan.recipebook.provider.Contract.Recipe;
 
 
 /**
  * Helper class for creating and maintaining recipe database.
- * Will create database as per the local 'Contract' class
+ * Will create database as per the local 'Contract' class.
+ * @see Contract
  */
 public class DbHelper extends SQLiteOpenHelper {
 
@@ -17,14 +18,14 @@ public class DbHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     private static final String SQL_CREATE_RECIPES =
-            "CREATE TABLE " + RecipeTable.TABLE_NAME + " (" +
-            RecipeTable._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-            RecipeTable.COLUMN_NAME_TITLE + " TEXT," +
-            RecipeTable.COLUMN_NAME_INSTRUCTIONS + " TEXT" +
+            "CREATE TABLE " + Recipe.NAME_TABLE + " (" +
+            Recipe._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+            Recipe.NAME_COL_TITLE + " TEXT," +
+            Recipe.NAME_COL_INSTRUCTIONS + " TEXT" +
             ");";
 
     private static final String SQL_DROP_RECIPES =
-            "DROP TABLE IF EXISTS " + RecipeTable.TABLE_NAME;
+            "DROP TABLE IF EXISTS " + Recipe.NAME_TABLE;
 
     /** Class constructor. Simply calls SQLiteOpenHelper's constructor. */
     public DbHelper(Context context) {
