@@ -2,22 +2,20 @@
 
     <string name="app_name">Recipe Book</string>
 
+    <!-- Button strings for 'activity_recipe_list' layout -->
     <string name="btnStringAdd">Add</string>
 
+    <!-- Button strings for 'activity_recipe_edit' -->
     <string name="btnStringEdit">Edit</string>
-
-    <string name="btnStringDelete">Delete</string>
     <string name="btnStringSave">Save</string>
+    <string name="btnStringDelete">Delete</string>
     <string name="btnStringCancel">Cancel</string>
 
-
-    <!-- Default strings for recipe activities -->
+    <!-- Default strings for 'activity_recipe_edit' -->
     <string name="nullRecipeTitle">Unnamed Recipe</string>
     <string name="nullRecipeInstructions">This recipe has no instructions.</string>
 
     <string name="hintRecipeTitle">Recipe Name</string>
     <string name="hintRecipeInstructions">Write your recipe instructions here…</string>
-
-
 
 </resources>

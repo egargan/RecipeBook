@@ -14,5 +14,9 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="Button.Delete" parent="ThemeOverlay.AppCompat">
+        <item name="colorAccent">@color/deleteRed</item>
+    </style>
+
 
 </resources>

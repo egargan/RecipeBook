@@ -133,7 +133,11 @@ public class RecipeProvider extends ContentProvider {
                 // If non-null selection given, append 'AND' so we can tag on ID selection string
                 if (selection != null) {
                     selection += " AND ";
+                } else {
+                    // Else clear selection string (sometimes "null" was slipping through?)
+                    selection = "";
                 }
+
                 selection += Contract.Recipe._ID + "=" + uri.getLastPathSegment();
 
                 deletions = db.delete(Contract.Recipe.NAME_TABLE,
@@ -153,6 +157,8 @@ public class RecipeProvider extends ContentProvider {
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection,
                       @Nullable String[] selectionArgs) {
 
+        Log.i("rcpProv",selection + "\n");
+
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 
         // Will hold number of rows updated, as returned by db.update(...)
@@ -169,9 +175,16 @@ public class RecipeProvider extends ContentProvider {
             case RECIPE_ID :
 
                 if (selection != null) {
+                    // If other selection criteria exist, add "AND" for appending id selector
                     selection += " AND ";
+                } else {
+                    // Else remove any potential "null"s
+                    selection = "";
                 }
+
                 selection += Contract.Recipe._ID + "=" + uri.getLastPathSegment();
+
+                Log.i("rcpProv",selection);
 
                 updates = db.update(Contract.Recipe.NAME_TABLE,
                         values,

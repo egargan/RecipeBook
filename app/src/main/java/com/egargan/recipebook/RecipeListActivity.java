@@ -39,32 +39,14 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         getLoaderManager().initLoader(ID_LOADER, null, this);
     }
 
-
-
     @Override
     protected void onDestroy() {
 
-        // close db here, however we're going to access it
+        // Don't need to worry about closing db, content provider handles it for us.
+
+        getLoaderManager().destroyLoader(ID_LOADER);
+
         super.onDestroy();
-    }
-
-
-    public void dosomething(View btn) {
-
-        // eg insert
-        ContentValues vals = new ContentValues();
-
-        vals.put(Recipe.NAME_COL_TITLE, "Egg Sandwich");
-        vals.put(Recipe.NAME_COL_INSTRUCTIONS, "Put fried egg in sandwich");
-
-        getContentResolver().insert(Contract.RCP_TABLE_URI, vals);
-
-        // eg query
-        Cursor c = getContentResolver().query(Contract.RCP_TABLE_URI,
-                null, null,
-                null, null);
-
-        c.close();
     }
 
     @Override
@@ -92,7 +74,7 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         // TODO : maybe construct adapter in onload with null cursor, then just swap cursor here??
         rcpListView = findViewById(R.id.listView_recipe);
 
-        // TODO: make custom layout for recipes + put in here
+        // TODO: make custom layout for recipes + put in here mmmmmm prosb not
         rcpListAdapter = new SimpleCursorAdapter(this,
 
                 android.R.layout.simple_list_item_2, // Layout of individual list items
@@ -125,15 +107,24 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         }
     };
 
+
+    /** Handler for 'add' button. Launches RecipeViewActivity with no URI */
+    public void onClickAdd(View btn) {
+        launchRecipeViewActivity(null);
+    }
+
     /** Launches RecipeEditActivity to show the recipe with the given ID.
      * @param rcpUri Uri pointing to recipe in database.
      * */
     private void launchRecipeViewActivity(Uri rcpUri) {
 
         Intent i = new Intent(this, RecipeEditActivity.class);
-        i.setData(rcpUri);
+
+        if (rcpUri != null) i.setData(rcpUri);
 
         startActivity(i);
     }
+
+
 
 }

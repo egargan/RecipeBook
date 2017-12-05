@@ -3,17 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <Button
-        android:id="@+id/btnEdit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/btnStringEdit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+    android:layout_height="match_parent"
+    android:id="@+id/root">
 
     <Button
         android:id="@+id/btnCancel"
@@ -21,19 +12,36 @@
         android:layout_height="47dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
+        android:onClick="onClickCancel"
         android:text="@string/btnStringCancel"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnEdit" />
 
     <Button
         android:id="@+id/btnDelete"
+        style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
+
+        android:onClick="onClickDelete"
         android:text="@string/btnStringDelete"
+
+        android:theme="@style/Button.Delete"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btnCancel" />
+
+    <Button
+        android:id="@+id/btnEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="16dp"
+        android:onClick="onClickEditSave"
+        android:text="@string/btnStringEdit"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <EditText
         android:id="@+id/txtTitle"
@@ -44,7 +52,6 @@
         android:layout_marginTop="16dp"
         android:hint="@string/hintRecipeTitle"
         android:inputType="text"
-        android:text="@string/nullRecipeTitle"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,13 +65,16 @@
         android:background="@android:color/darker_gray"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle"
+        android:focusable="false"/>
 
     <ScrollView
-        android:layout_width="368dp"
-        android:layout_height="368dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="72dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -73,12 +83,13 @@
             style="@style/Text.Instructions"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12dp"
-            android:hint="@string/nullRecipeInstructions"
+            android:hint="@string/hintRecipeInstructions"
             android:inputType="text"
-            android:text="@string/nullRecipeInstructions"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="125dp" />
+            android:scrollHorizontally="false"
+            android:selectAllOnFocus="false"
+            tools:layout_editor_absoluteX="84dp"
+            tools:layout_editor_absoluteY="144dp"/>
+
     </ScrollView>
 
 
