@@ -18,10 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".RecipeViewActivity">
-        </activity>
-
-        <activity android:name=".NewRecipeActivity">
+        <activity android:name=".RecipeEditActivity">
         </activity>
 
         <provider android:name="com.egargan.recipebook.provider.RecipeProvider"

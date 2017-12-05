@@ -13,7 +13,7 @@ import com.egargan.recipebook.provider.Contract;
  * Activity for displaying recipes:, including two text fields for a recipe's title and instructions.
  *
  */
-public class RecipeViewActivity extends AppCompatActivity {
+public class RecipeEditActivity extends AppCompatActivity {
 
     TextView rcpTitle;
     TextView rcpInstructions;
@@ -27,9 +27,17 @@ public class RecipeViewActivity extends AppCompatActivity {
         rcpTitle = findViewById(R.id.txtTitle);
         rcpInstructions = findViewById(R.id.txtInstructions);
 
-        // Activity expects recipe URI to be bundled in intent.
+
         if (getIntent().getData() != null) {
+
+            // If we've been given data, attempt to load it as recipe.
             loadRecipe(getIntent().getData());
+            makeEditable(false);
+
+        } else {
+
+            // If no recipe given, assume 'new' recipe context
+            makeEditable(true);
         }
     }
 
@@ -54,6 +62,12 @@ public class RecipeViewActivity extends AppCompatActivity {
         rcpInstructions.setText(c.getString(Contract.Recipe.INDEX_COL_INSTRUCTIONS));
 
         c.close();
+    }
+
+    private void makeEditable(boolean editable) {
+
+
+
     }
 
 }

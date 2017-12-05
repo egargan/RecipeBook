@@ -9,10 +9,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
@@ -85,10 +83,11 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         rcpListAdapter.swapCursor(null);
     }
 
-    // Called when loader finished getting data from provider.
-    // Will only ever return a cursor to entire recipe table, as above.
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        // Called when loader finished getting data from provider.
+        // Will only ever return a cursor to entire recipe table, as above.
 
         // TODO : maybe construct adapter in onload with null cursor, then just swap cursor here??
         rcpListView = findViewById(R.id.listView_recipe);
@@ -126,12 +125,12 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         }
     };
 
-    /** Launches RecipeViewActivity to show the recipe with the given ID.
+    /** Launches RecipeEditActivity to show the recipe with the given ID.
      * @param rcpUri Uri pointing to recipe in database.
      * */
     private void launchRecipeViewActivity(Uri rcpUri) {
 
-        Intent i = new Intent(this, RecipeViewActivity.class);
+        Intent i = new Intent(this, RecipeEditActivity.class);
         i.setData(rcpUri);
 
         startActivity(i);

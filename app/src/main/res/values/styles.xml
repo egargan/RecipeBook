@@ -5,10 +5,12 @@
     </style>
 
     <style name="Text.Title" parent="@android:style/TextAppearance">
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">24sp</item>
     </style>
 
     <style name="Text.Instructions" parent="@android:style/TextAppearance">
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textSize">16sp</item>
     </style>
 
