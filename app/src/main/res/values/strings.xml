@@ -1,3 +1,12 @@
 <resources>
+
     <string name="app_name">Recipe Book</string>
+
+    <!-- Default strings for recipe activities -->
+    <string name="nullRecipeTitle">Unnamed Recipe</string>
+    <string name="nullRecipeInstructions">This recipe has no instructions.</string>
+
+    <string name="hintRecipeTitle">Recipe Name</string>
+    <string name="hintRecipeInstructions">Write your recipe instructions here…</string>
+
 </resources>

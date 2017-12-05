@@ -34,12 +34,16 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+
         // Called when provider attempts to open the database and SQLite reports it does not exist.
+        // Probs run async??
+
         db.execSQL(SQL_CREATE_RECIPES);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+
         db.execSQL(SQL_DROP_RECIPES);
         onCreate(db);
     }

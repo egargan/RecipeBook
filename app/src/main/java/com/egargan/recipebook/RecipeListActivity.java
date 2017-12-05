@@ -3,12 +3,15 @@ package com.egargan.recipebook;
 import android.app.LoaderManager;
 import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
@@ -36,25 +39,9 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
 
         // Create loader for querying recipe content provider, will invoke 'onCreateLoader()'
         getLoaderManager().initLoader(ID_LOADER, null, this);
-
-        // TODO : put list view population into method, probs
-        rcpListView = findViewById(R.id.listView_recipe);
-
-        // TODO: make custom layout for recipes + put in here
-        rcpListAdapter = new SimpleCursorAdapter(this,
-                android.R.layout.simple_list_item_2,
-
-                null, // Cursor object - is set when cursor loader completes query.
-
-                // Projection on database - must match with
-                new String[] {Recipe.NAME_COL_TITLE, Recipe.NAME_COL_INSTRUCTIONS},
-
-                // Get IDs of layout's text fields
-                new int[] { android.R.id.text1, android.R.id.text2},
-                0);
-
-        rcpListView.setAdapter(rcpListAdapter);
     }
+
+
 
     @Override
     protected void onDestroy() {
@@ -62,6 +49,7 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         // close db here, however we're going to access it
         super.onDestroy();
     }
+
 
     public void dosomething(View btn) {
 
@@ -75,8 +63,10 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
 
         // eg query
         Cursor c = getContentResolver().query(Contract.RCP_TABLE_URI,
-                null,
-                null, null, null);
+                null, null,
+                null, null);
+
+        c.close();
     }
 
     @Override
@@ -86,18 +76,65 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         // Construct query for loader to perform - here, just get all recipe data.
 
         return new CursorLoader(this, Contract.RCP_TABLE_URI,
-                null, null, null, null);
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-        // Called when loader is finished getting data from provider.
-        rcpListAdapter.swapCursor(data);
+                null, null,
+                null, null);
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         rcpListAdapter.swapCursor(null);
     }
+
+    // Called when loader finished getting data from provider.
+    // Will only ever return a cursor to entire recipe table, as above.
+    @Override
+    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+
+        // TODO : maybe construct adapter in onload with null cursor, then just swap cursor here??
+        rcpListView = findViewById(R.id.listView_recipe);
+
+        // TODO: make custom layout for recipes + put in here
+        rcpListAdapter = new SimpleCursorAdapter(this,
+
+                android.R.layout.simple_list_item_2, // Layout of individual list items
+
+                data, // Cursor object returned by loader
+
+                // Projection on database
+                new String[] {Recipe.NAME_COL_TITLE, Recipe.NAME_COL_INSTRUCTIONS},
+
+                // Get IDs of layout's text fields
+                new int[] { android.R.id.text1, android.R.id.text2 },
+
+                0);
+
+        rcpListView.setAdapter(rcpListAdapter);
+        rcpListView.setOnItemClickListener(recipeItemListener);
+
+        rcpListAdapter.swapCursor(data);
+
+        // Don't close cursor! Must persist for cursor adapter
+    }
+
+    // Listener attached to each listview element
+    private AdapterView.OnItemClickListener recipeItemListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+            // Cursor gets 'id' from data set's _ID column, thf. can be safely used to reference
+            launchRecipeViewActivity( Uri.parse(Contract.RCP_TABLE_URI + "/" + id ));
+        }
+    };
+
+    /** Launches RecipeViewActivity to show the recipe with the given ID.
+     * @param rcpUri Uri pointing to recipe in database.
+     * */
+    private void launchRecipeViewActivity(Uri rcpUri) {
+
+        Intent i = new Intent(this, RecipeViewActivity.class);
+        i.setData(rcpUri);
+
+        startActivity(i);
+    }
+
 }

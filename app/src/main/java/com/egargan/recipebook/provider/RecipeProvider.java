@@ -25,7 +25,7 @@ public class RecipeProvider extends ContentProvider {
     private static final int RECIPES = 1;
     private static final int RECIPE_ID = 2;
 
-    //
+    // Construct matcher to handle incoming URIs and direct to correct data
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(Contract.AUTHORITY, Contract.Recipe.NAME_TABLE, RECIPES);
@@ -40,6 +40,8 @@ public class RecipeProvider extends ContentProvider {
 
         return true; // TODO: check if db succesfully loaded, and reflect in return value.
     }
+
+    // We don't need to manually close our db - Android handles it for us.
 
     @Nullable @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,
@@ -77,13 +79,12 @@ public class RecipeProvider extends ContentProvider {
     @Nullable @Override
     public String getType(@NonNull Uri uri) {
 
-        // Returns MIME string denoting db item types, either an entire table (dir),
-        // or a single record (item)
+        // Returns MIME string denoting db item types, either an entire table, or a single record.
 
         if (uri.getLastPathSegment() == null) {
-            return "vnd.android.cursor.dir/RecipeProvder.data.text";
+            return Contract.MIME_TABLE;
         } else {
-            return "vnd.android.cursor.item/RecipeProvder.data.text";
+            return Contract.MIME_RECIPE;
         }
 
     }
@@ -176,7 +177,6 @@ public class RecipeProvider extends ContentProvider {
                         values,
                         selection,
                         selectionArgs);
-
                 break;
 
             default :

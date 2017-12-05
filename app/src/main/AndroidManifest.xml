@@ -19,17 +19,15 @@
         </activity>
 
         <activity android:name=".RecipeViewActivity">
-
         </activity>
 
         <activity android:name=".NewRecipeActivity">
-            
         </activity>
 
         <provider android:name="com.egargan.recipebook.provider.RecipeProvider"
             android:authorities="com.egargan.recipebook.provider.RecipeProvider"
-            android:exported="false"> <!-- Other apps can't access this provider without permission -->
-
+            android:exported="false">
+            <!-- Other apps can't access this provider without permission -->
         </provider>
 
     </application>

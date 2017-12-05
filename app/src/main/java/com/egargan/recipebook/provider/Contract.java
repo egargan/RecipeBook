@@ -14,6 +14,10 @@ public class Contract {
 
     public static final Uri RCP_TABLE_URI = Uri.parse("content://" + AUTHORITY + "/" + Recipe.NAME_TABLE);
 
+    // MIME types of table + individual records
+    public static final String MIME_TABLE = "vnd.android.cursor.dir/RecipeProvder.data.text";
+    public static final String MIME_RECIPE = "vnd.android.cursor.item/RecipeProvder.data.text";
+
     /** Inner class defining recipe table contents.
      *  Not necessary, but makes for more extensible code if e.g. more tables were to be added. */
     public static class Recipe implements BaseColumns {
