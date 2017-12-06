@@ -7,21 +7,10 @@
     android:id="@+id/root">
 
     <Button
-        android:id="@+id/btnCancel"
-        android:layout_width="wrap_content"
-        android:layout_height="47dp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginEnd="8dp"
-        android:onClick="onClickCancel"
-        android:text="@string/btnStringCancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnEdit" />
-
-    <Button
         android:id="@+id/btnDelete"
         style="@style/Widget.AppCompat.Button.Colored"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="8dp"
 
@@ -33,9 +22,20 @@
         app:layout_constraintEnd_toStartOf="@+id/btnCancel" />
 
     <Button
+        android:id="@+id/btnCancel"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="8dp"
+        android:onClick="onClickCancel"
+        android:text="@string/btnStringCancel"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btnEdit" />
+
+    <Button
         android:id="@+id/btnEdit"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginBottom="24dp"
         android:layout_marginEnd="16dp"
         android:onClick="onClickEditSave"
@@ -84,12 +84,11 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/hintRecipeInstructions"
-            android:inputType="text"
+            android:inputType="textMultiLine"
             android:scrollHorizontally="false"
             android:selectAllOnFocus="false"
             tools:layout_editor_absoluteX="84dp"
-            tools:layout_editor_absoluteY="144dp"/>
-
+            tools:layout_editor_absoluteY="144dp" />
     </ScrollView>
 
 

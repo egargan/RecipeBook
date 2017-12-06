@@ -25,7 +25,7 @@ public class RecipeProvider extends ContentProvider {
     private static final int RECIPES = 1;
     private static final int RECIPE_ID = 2;
 
-    // Construct matcher to handle incoming URIs and direct to correct data
+    // Construct matcher to handle incoming URIs and direct to correct data, with above constants
     static {
         matcher = new UriMatcher(UriMatcher.NO_MATCH);
         matcher.addURI(Contract.AUTHORITY, Contract.Recipe.NAME_TABLE, RECIPES);
@@ -37,11 +37,8 @@ public class RecipeProvider extends ContentProvider {
 
         // Invoked when application starts - is not called by us!
         dbHelper = new DbHelper(getContext());
-
-        return true; // TODO: check if db succesfully loaded, and reflect in return value.
+        return true;
     }
-
-    // We don't need to manually close our db - Android handles it for us.
 
     @Nullable @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection,

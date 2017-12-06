@@ -12,8 +12,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.BounceInterpolator;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -28,6 +30,8 @@ import com.egargan.recipebook.provider.Contract;
  */
 public class RecipeEditActivity extends AppCompatActivity {
 
+    private Uri recipeUri;
+
     private boolean newRecipe;
     private boolean editMode;
 
@@ -38,7 +42,9 @@ public class RecipeEditActivity extends AppCompatActivity {
     private Button cancelBtn;
     private Button editBtn; // Changes from 'edit' to 'save' while edit mode is active.
 
-    private Uri recipeUri;
+    // Animations for edit controls - both buttons appear from behind the edit/save button.
+    Animation delBtnAnim;
+    Animation cancelBtnAnim;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +58,13 @@ public class RecipeEditActivity extends AppCompatActivity {
         delBtn = findViewById(R.id.btnDelete);
         cancelBtn = findViewById(R.id.btnCancel);
         editBtn = findViewById(R.id.btnEdit);
+
+        // Construct animations for cancel + delete buttons' appearance
+        delBtnAnim = AnimationUtils.loadAnimation(this, R.anim.slide_left_del);
+        cancelBtnAnim = AnimationUtils.loadAnimation(this, R.anim.slide_left_cancel);
+
+        delBtnAnim.setInterpolator(new AccelerateDecelerateInterpolator());
+        cancelBtnAnim.setInterpolator(new AccelerateDecelerateInterpolator());
 
         if (getIntent().getData() != null) {
 
@@ -182,30 +195,31 @@ public class RecipeEditActivity extends AppCompatActivity {
      * @see this#saveChanges() */
     public void onClickEditSave(View btn) {
 
-//        Animation move = AnimationUtils.loadAnimation(this, R.anim.slide_left_cancel);
-//        Animation move2 = AnimationUtils.loadAnimation(this, R.anim.slide_left_del);
-//
-//        delBtn.startAnimation(move2);
-//        cancelBtn.startAnimation(move);
-
         if (!editMode) {
 
             // If in 'view' mode, then enter 'edit' mode and return
             makeEditable(true);
-            return;
+
+            // Start animations
+            delBtn.startAnimation(delBtnAnim);
+            cancelBtn.startAnimation(cancelBtnAnim);
+
         } else {
 
             // Else commit changes to db and 'view' new recipe.
             saveChanges();
             makeEditable(false);
+
+            // Cancel any animations if incomplete
+            delBtnAnim.reset();
+            cancelBtnAnim.reset();
         }
     }
 
     /** Deletes the recipe being viewed from the database. */
     public void onClickDelete(View btn) {
 
-        int del = getContentResolver().delete(recipeUri, null, null);
-
+        getContentResolver().delete(recipeUri, null, null);
         finish();
     }
 

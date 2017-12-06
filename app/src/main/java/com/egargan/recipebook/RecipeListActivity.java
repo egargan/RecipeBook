@@ -27,8 +27,8 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
 
     private static final int ID_LOADER = 0;
 
+    // Cursor adapter for recipe list view, assigned after db query completes
     private SimpleCursorAdapter rcpListAdapter;
-    private ListView rcpListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,10 +71,8 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
         // Called when loader finished getting data from provider.
         // Will only ever return a cursor to entire recipe table, as above.
 
-        // TODO : maybe construct adapter in onload with null cursor, then just swap cursor here??
-        rcpListView = findViewById(R.id.listView_recipe);
+        ListView rcpListView = findViewById(R.id.listView_recipe);
 
-        // TODO: make custom layout for recipes + put in here mmmmmm prosb not
         rcpListAdapter = new SimpleCursorAdapter(this,
 
                 android.R.layout.simple_list_item_2, // Layout of individual list items
@@ -98,7 +96,7 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
     }
 
     // Listener attached to each listview element
-    private AdapterView.OnItemClickListener recipeItemListener = new AdapterView.OnItemClickListener() {
+    private final AdapterView.OnItemClickListener recipeItemListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -114,12 +112,12 @@ public class RecipeListActivity extends AppCompatActivity implements LoaderManag
     }
 
     /** Launches RecipeEditActivity to show the recipe with the given ID.
-     * @param rcpUri Uri pointing to recipe in database.
-     * */
+     * @param rcpUri Uri pointing to recipe in database. */
     private void launchRecipeViewActivity(Uri rcpUri) {
 
         Intent i = new Intent(this, RecipeEditActivity.class);
 
+        // If called by a listview element click, then pass its recipe URI to view/edit activity
         if (rcpUri != null) i.setData(rcpUri);
 
         startActivity(i);
